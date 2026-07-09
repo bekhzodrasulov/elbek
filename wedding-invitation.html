@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Сергей &amp; Мария — приглашение на свадьбу</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Marck+Script&display=swap');
+
+:root{
+  --cream:#f3efe1;
+  --cream-light:#faf8f0;
+  --sage-dark:#41502f;
+  --sage:#5f7350;
+  --sage-mid:#7c8f6a;
+  --sage-pale:#c8d3b6;
+  --gold:#af8e4c;
+  --ink:#333a26;
+  --line: rgba(65,80,47,0.25);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'PT Serif', serif;
+  overflow-x:hidden;
+}
+h1,h2,h3,.script{font-family:'Playfair Display', serif;}
+.script{font-family:'Marck Script', cursive;}
+a{color:inherit;}
+
+/* ===== envelope gate ===== */
+#gate{
+  position:fixed; inset:0; z-index:100;
+  display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 50% 30%, #f6f2e6 0%, #e6ddc4 60%, #d9cfae 100%);
+  transition:opacity .9s ease, visibility .9s ease;
+}
+#gate.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+.envelope-wrap{ text-align:center; user-select:none; cursor:pointer; }
+.envelope{
+  position:relative;
+  width:min(78vw, 320px);
+  height:calc(min(78vw, 320px) * 0.64);
+  margin:0 auto 28px;
+}
+.env-body{
+  position:absolute; inset:0;
+  background:var(--cream-light);
+  border:1px solid var(--sage-pale);
+  border-radius:4px;
+  box-shadow:0 18px 40px rgba(65,80,47,0.18);
+}
+.env-flap{
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  clip-path:polygon(0 0, 100% 0, 50% 58%);
+  background:linear-gradient(160deg, var(--sage) 0%, var(--sage-dark) 100%);
+  transform-origin:top center;
+  transition:transform 1s cubic-bezier(.6,0,.3,1);
+  border-radius:4px 4px 0 0;
+  z-index:3;
+}
+.envelope.open .env-flap{ transform:rotateX(178deg); }
+.env-shadow-l, .env-shadow-r{
+  position:absolute; bottom:0; width:52%; height:70%;
+  background:rgba(65,80,47,0.06);
+}
+.env-shadow-l{ left:0; clip-path:polygon(0 100%, 0 0, 100% 100%); }
+.env-shadow-r{ right:0; clip-path:polygon(100% 100%, 100% 0, 0 100%); }
+.seal{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-58%);
+  width:56px; height:56px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #7c8f5f, var(--sage-dark) 70%);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Marck Script', cursive; color:var(--cream-light); font-size:20px;
+  z-index:4; box-shadow:0 3px 8px rgba(0,0,0,0.25);
+  transition:transform .5s ease, opacity .5s ease;
+}
+.envelope.open .seal{ transform:translate(-50%,-58%) scale(0); opacity:0; }
+.gate-title{ font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--sage-dark); margin-bottom:6px;}
+.gate-sub{ font-size:14px; color:var(--sage); font-style:italic; }
+.gate-hint{
+  margin-top:10px; font-size:13px; color:var(--sage-mid);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+/* ===== main ===== */
+#invite{
+  opacity:0; transition:opacity 1s ease .3s;
+  max-width:640px; margin:0 auto;
+}
+#invite.shown{ opacity:1; }
+section{ padding:56px 28px; position:relative; }
+.divider{
+  display:flex; align-items:center; gap:14px; margin:0 auto 34px; width:80%;
+  color:var(--sage-mid);
+}
+.divider::before, .divider::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+.hero{ text-align:center; background:var(--sage-dark); color:var(--cream-light); padding:64px 24px 56px;}
+.hero .eyebrow{ letter-spacing:.25em; font-size:12px; text-transform:uppercase; color:var(--sage-pale); margin-bottom:14px;}
+.hero h1{ font-size:clamp(28px,7vw,42px); font-weight:500; margin:0 0 8px; line-height:1.15;}
+.hero .sub{ font-family:'Marck Script',cursive; font-size:clamp(20px,5vw,26px); color:var(--sage-pale); margin:0 0 26px;}
+.photo-frame{
+  width:min(70%, 260px); aspect-ratio:3/4; margin:0 auto 26px;
+  border-radius:50% / 45%; overflow:hidden; border:6px solid var(--cream-light);
+  box-shadow:0 14px 30px rgba(0,0,0,0.3);
+}
+.photo-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+.hero .date{ font-size:15px; letter-spacing:.15em; color:var(--cream-light); }
+
+.intro{ text-align:center; }
+.intro h2{ font-size:22px; color:var(--sage-dark); font-weight:500; margin:0 0 18px;}
+.intro p{ line-height:1.9; font-size:15.5px; color:var(--ink); margin:0 auto; max-width:480px;}
+
+.timeline{ }
+.timeline h2, .venue h2, .dresscode h2, .wishes h2, .rsvp h2, .countdown h2{
+  text-align:center; font-size:22px; color:var(--sage-dark); font-weight:500; margin:0 0 34px;
+}
+.t-item{ display:flex; gap:20px; align-items:flex-start; padding:16px 0; border-bottom:1px dashed var(--line);}
+.t-item:last-child{ border-bottom:none; }
+.t-icon{
+  width:44px; height:44px; border-radius:50%; background:var(--sage-pale);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:19px;
+}
+.t-time{ font-weight:700; color:var(--sage-dark); font-size:15px; }
+.t-label{ color:var(--ink); font-size:14.5px; margin-top:2px;}
+
+.venue{ background:var(--sage); color:var(--cream-light); border-radius:2px; margin:0 20px; padding:48px 26px;}
+.venue h2{ color:var(--cream-light); }
+.venue p{ text-align:center; line-height:1.8; font-size:15px; margin:0 0 24px;}
+.venue-map{
+  width:100%; aspect-ratio:16/10; border-radius:4px; margin-bottom:22px; overflow:hidden;
+  background:var(--sage-dark); display:flex; align-items:center; justify-content:center; color:var(--sage-pale); font-size:13px;
+}
+.btn{
+  display:inline-block; padding:12px 30px; border:1px solid currentColor; border-radius:2px;
+  text-decoration:none; font-size:13px; letter-spacing:.1em; text-transform:uppercase;
+  background:transparent; cursor:pointer; transition:background .25s, color .25s;
+}
+.venue .btn{ display:block; width:fit-content; margin:0 auto; }
+.venue .btn:hover{ background:var(--cream-light); color:var(--sage-dark); }
+
+.dresscode p{ text-align:center; line-height:1.85; font-size:15px; max-width:480px; margin:0 auto 22px;}
+.palette{ display:flex; justify-content:center; gap:10px; margin:24px 0 30px; flex-wrap:wrap;}
+.swatch{ width:34px; height:34px; border-radius:50%; box-shadow:inset 0 0 0 1px rgba(0,0,0,0.08);}
+.dc-cols{ display:flex; gap:28px; justify-content:center; flex-wrap:wrap; margin-top:20px;}
+.dc-col{ max-width:220px; text-align:center; }
+.dc-col h3{ font-size:15px; color:var(--sage-dark); margin:0 0 8px; font-weight:600;}
+.dc-col p{ font-size:14px; margin:0; }
+
+.wishes{ text-align:center; }
+.wish-cards{ display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:10px;}
+.wish-card{
+  background:var(--cream-light); border:1px solid var(--line); border-radius:6px;
+  padding:24px 20px; max-width:230px; flex:1 1 200px;
+}
+.wish-card .num{ font-family:'Marck Script',cursive; font-size:24px; color:var(--gold); display:block; margin-bottom:8px;}
+.wish-card p{ font-size:14px; line-height:1.7; margin:0; }
+
+.countdown-wrap{ text-align:center; background:var(--sage-dark); color:var(--cream-light);}
+.countdown-wrap h2{ color:var(--cream-light); }
+.cd-grid{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:6px;}
+.cd-box{ background:rgba(255,255,255,0.08); border-radius:6px; padding:16px 14px; min-width:70px;}
+.cd-num{ font-size:28px; font-weight:600; font-family:'Playfair Display',serif;}
+.cd-label{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--sage-pale); margin-top:4px;}
+
+.rsvp{ }
+.rsvp p.lead{ text-align:center; font-size:14.5px; line-height:1.8; max-width:460px; margin:0 auto 30px;}
+form{ display:flex; flex-direction:column; gap:18px; max-width:440px; margin:0 auto;}
+.field label{ display:block; font-size:13px; color:var(--sage-dark); margin-bottom:6px; letter-spacing:.03em;}
+.field input[type=text], .field textarea{
+  width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:3px;
+  background:var(--cream-light); font-family:'PT Serif',serif; font-size:14.5px; color:var(--ink);
+}
+.radio-row{ display:flex; gap:16px; flex-wrap:wrap;}
+.radio-row label, .check-row label{
+  display:flex; align-items:center; gap:7px; font-size:14px; cursor:pointer;
+}
+.check-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px 16px;}
+.rsvp .btn{ align-self:center; margin-top:6px; background:var(--sage-dark); color:var(--cream-light); border-color:var(--sage-dark);}
+.rsvp .btn:hover{ background:transparent; color:var(--sage-dark); }
+
+footer{ text-align:center; padding:60px 26px 70px;}
+footer .script{ font-size:30px; color:var(--sage-dark);}
+footer .small{ font-size:12px; color:var(--sage-mid); margin-top:10px; letter-spacing:.08em; text-transform:uppercase;}
+
+@media(max-width:480px){
+  section{ padding:44px 18px; }
+  .venue{ margin:0 10px; padding:38px 18px; }
+  .check-grid{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="envelope-wrap" onclick="openInvite()">
+    <div class="envelope" id="envelopeEl">
+      <div class="env-body"></div>
+      <div class="env-shadow-l"></div>
+      <div class="env-shadow-r"></div>
+      <div class="env-flap"></div>
+      <div class="seal">С&amp;М</div>
+    </div>
+    <div class="gate-title">Приглашение</div>
+    <div class="gate-sub">на свадьбу твоей мечты</div>
+    <div class="gate-hint">нажмите на конверт, чтобы открыть</div>
+  </div>
+</div>
+
+<main id="invite">
+
+  <section class="hero">
+    <div class="eyebrow">Мы женимся</div>
+    <div class="photo-frame">
+      <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Сергей и Мария">
+    </div>
+    <h1>Сергей &amp; Мария</h1>
+    <div class="sub">приглашают на свою свадьбу</div>
+    <div class="date">26 июня 2026</div>
+  </section>
+
+  <section class="intro">
+    <div class="divider">❦</div>
+    <h2>Дорогие друзья и родные!</h2>
+    <p>Случилось невероятное — мы решили связать наши судьбы и начать новую главу нашей жизни вместе. Будем очень рады, если вы разделите с нами этот тёплый и важный день.</p>
+  </section>
+
+  <section class="timeline" id="program">
+    <div class="divider">Программа дня</div>
+    <div class="t-item">
+      <div class="t-icon">🥂</div>
+      <div><div class="t-time">15:30</div><div class="t-label">Сбор гостей — встречаемся, обнимаемся</div></div>
+    </div>
+    <div class="t-item">
+      <div class="t-icon">💍</div>
+      <div><div class="t-time">16:30</div><div class="t-label">Церемония — два «я» переплетаются в одно «навсегда»</div></div>
+    </div>
+    <div class="t-item">
+      <div class="t-icon">🍽️</div>
+      <div><div class="t-time">17:30</div><div class="t-label">Банкет — время вкусной еды, веселья и танцев</div></div>
+    </div>
+    <div class="t-item">
+      <div class="t-icon">🎂</div>
+      <div><div class="t-time">22:00</div><div class="t-label">Торт — сладкий символ нашей новой жизни</div></div>
+    </div>
+    <div class="t-item">
+      <div class="t-icon">✨</div>
+      <div><div class="t-time">23:00</div><div class="t-label">Завершение — даже такой прекрасный вечер может закончиться</div></div>
+    </div>
+  </section>
+
+  <section class="venue" id="venue">
+    <h2>Место проведения</h2>
+    <p>г. Якутск, Маганский тракт, 6 километр,<br>банкетный павильон «Боргэс»</p>
+    <div class="venue-map">карта проезда</div>
+    <a class="btn" href="https://yandex.ru/maps/?text=Якутск%20Маганский%20тракт%206%20км%20банкетный%20павильон%20Боргэс" target="_blank" rel="noopener">Построить маршрут</a>
+  </section>
+
+  <section class="dresscode" id="dresscode">
+    <div class="divider">Дресс-код</div>
+    <p>Мы будем рады видеть вас в образах в пастельных, мягких оттенках — это поможет создать лёгкую и гармоничную атмосферу праздника.</p>
+    <div class="palette">
+      <div class="swatch" style="background:#e9d3d0"></div>
+      <div class="swatch" style="background:#f0e2c8"></div>
+      <div class="swatch" style="background:#f3ecd6"></div>
+      <div class="swatch" style="background:#d7e0c9"></div>
+      <div class="swatch" style="background:#cfe0dd"></div>
+      <div class="swatch" style="background:#dcd3e6"></div>
+      <div class="swatch" style="background:#e6c9cf"></div>
+    </div>
+    <div class="dc-cols">
+      <div class="dc-col">
+        <h3>Женщинам</h3>
+        <p>платья в пастельной гамме</p>
+      </div>
+      <div class="dc-col">
+        <h3>Мужчинам</h3>
+        <p>костюм или сочетание из брюк, чиносов, слаксов и рубашки. Классические тона. Допустимо тёмное смокинг или костюм</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wishes" id="wishes">
+    <div class="divider">Пожелания</div>
+    <div class="wish-cards">
+      <div class="wish-card"><span class="num">1</span><p>Чтобы наши руки были свободны для объятий, будем рады подаркам в конвертах</p></div>
+      <div class="wish-card"><span class="num">2</span><p>Приятным комплиментом для нас будет, если вместо цветов вы пополните нашу семейную коллекцию хорошим настроением</p></div>
+      <div class="wish-card"><span class="num">3</span><p>Пожалуйста, оставьте детей в надёжных руках на вечер торжества — для взрослой атмосферы праздника</p></div>
+    </div>
+  </section>
+
+  <section class="countdown-wrap" id="countdown">
+    <h2>До встречи</h2>
+    <div class="cd-grid">
+      <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-label">дней</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">часов</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-min">--</div><div class="cd-label">минут</div></div>
+      <div class="cd-box"><div class="cd-num" id="cd-sec">--</div><div class="cd-label">секунд</div></div>
+    </div>
+  </section>
+
+  <section class="rsvp" id="rsvp">
+    <div class="divider">Анкета</div>
+    <p class="lead">Для того чтобы подготовиться к торжеству и обеспечить комфорт всем присутствующим, просим вас заполнить нашу анкету.</p>
+    <form id="rsvpForm">
+      <div class="field">
+        <label for="name">Ваше имя и фамилия</label>
+        <input type="text" id="name" required>
+      </div>
+      <div class="field">
+        <label>Планируете ли вы присутствовать на свадьбе?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="attend" value="Да, с удовольствием" checked> Да, с удовольствием</label>
+          <label><input type="radio" name="attend" value="Буду с парой"> Буду с парой</label>
+          <label><input type="radio" name="attend" value="К сожалению, не смогу прийти"> К сожалению, не смогу прийти</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="allergies">Есть ли у вас аллергии, которые нам следует учесть при составлении меню?</label>
+        <input type="text" id="allergies" placeholder="Например: орехи, морепродукты">
+      </div>
+      <div class="field">
+        <label>Ваши предпочтения в напитках</label>
+        <div class="check-grid">
+          <label><input type="checkbox" value="Белое сухое вино"> Белое сухое вино</label>
+          <label><input type="checkbox" value="Белое полусладкое вино"> Белое полусладкое вино</label>
+          <label><input type="checkbox" value="Красное сухое вино"> Красное сухое вино</label>
+          <label><input type="checkbox" value="Красное полусладкое вино"> Красное полусладкое вино</label>
+          <label><input type="checkbox" value="Шампанское"> Шампанское</label>
+          <label><input type="checkbox" value="Виски"> Виски</label>
+          <label><input type="checkbox" value="Водка"> Водка</label>
+          <label><input type="checkbox" value="Не пью алкоголь"> Не пью алкоголь</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="wish">Свой вариант / пожелание молодожёнам</label>
+        <textarea id="wish" rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn">Отправить</button>
+      <div id="rsvpMsg" style="display:none; text-align:center; font-size:14px; color:var(--sage-dark);"></div>
+    </form>
+  </section>
+
+  <footer>
+    <div class="script">С любовью,<br>Сергей и Мария</div>
+    <div class="small">26 июня 2026 · Якутск</div>
+  </footer>
+
+</main>
+
+<script>
+function openInvite(){
+  var env = document.getElementById('envelopeEl');
+  env.classList.add('open');
+  setTimeout(function(){
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('invite').classList.add('shown');
+    document.body.style.overflow = 'auto';
+  }, 650);
+}
+document.body.style.overflow = 'hidden';
+
+/* countdown */
+var target = new Date('2026-06-26T15:30:00');
+function tick(){
+  var now = new Date();
+  var diff = target - now;
+  if(diff < 0) diff = 0;
+  var d = Math.floor(diff/86400000);
+  var h = Math.floor(diff%86400000/3600000);
+  var m = Math.floor(diff%3600000/60000);
+  var s = Math.floor(diff%60000/1000);
+  document.getElementById('cd-days').textContent = d;
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-sec').textContent = String(s).padStart(2,'0');
+}
+tick();
+setInterval(tick, 1000);
+
+/* RSVP -> mailto */
+document.getElementById('rsvpForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var name = document.getElementById('name').value;
+  var attend = document.querySelector('input[name=attend]:checked').value;
+  var allergies = document.getElementById('allergies').value || 'нет';
+  var wine = Array.from(document.querySelectorAll('.check-grid input:checked')).map(function(c){return c.value;}).join(', ') || 'не указано';
+  var wish = document.getElementById('wish').value || '';
+  var body = 'Имя: ' + name + '%0AПрисутствие: ' + attend + '%0AАллергии: ' + allergies + '%0AНапитки: ' + wine + '%0AПожелание: ' + wish;
+  var mailto = 'mailto:youremail@example.com?subject=' + encodeURIComponent('Анкета гостя — ' + name) + '&body=' + body;
+  window.location.href = mailto;
+  var msg = document.getElementById('rsvpMsg');
+  msg.style.display = 'block';
+  msg.textContent = 'Спасибо! Откроется почтовое приложение для отправки анкеты.';
+});
+</script>
+
+</body>
+</html>
