@@ -442,7 +442,7 @@ section {
 
 footer {
     text-align: center;
-    padding: 60px 26px 70px;
+    padding: 60px 26px 20px;
 }
 
 footer .script {
@@ -458,6 +458,17 @@ footer .small {
     text-transform: uppercase;
 }
 
+.social {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.social img {
+    width: 20px;
+    height: 20px;
+}
+
 @media(max-width:480px) {
     section {
         padding: 44px 18px;
@@ -471,4 +482,37 @@ footer .small {
     .check-grid {
         grid-template-columns: 1fr;
     }
+}
+
+
+/* Начальное состояние */
+.animate {
+    opacity: 0;
+    transition: all 2s ease;
+}
+
+/* Слева */
+.from-left {
+    transform: translateX(-100px);
+}
+
+/* Справа */
+.from-right {
+    transform: translateX(100px);
+}
+
+/* Снизу */
+.from-bottom {
+    transform: translateY(100px);
+}
+
+/* Сверху */
+.from-top {
+    transform: translateY(-100px);
+}
+
+/* Когда элемент появился */
+.animate.show {
+    opacity: 1;
+    transform: translate(0, 0);
 }
