@@ -231,7 +231,7 @@ section {
     width: min(70%, 260px);
     aspect-ratio: 3/4;
     margin: 0 auto 26px;
-    border-radius: 50% / 45%;
+    /* border-radius: 50% / 45%; */
     overflow: hidden;
     border: 6px solid var(--cream-light);
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
