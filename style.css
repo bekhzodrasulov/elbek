@@ -264,62 +264,44 @@ section {
 }
 
 .calendar {
+    width: 100%;
     text-align: center;
     background: var(--sage-dark);
     color: var(--cream-light);
     padding: 64px 24px 56px;
+    /* border-collapse: collapse; */
 }
 
-.calendar-header {
-    text-align: center;
-    margin-bottom: 25px;
+.calendar th,
+.calendar td {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
 }
 
-.calendar-header h2 {
-    font-size: 28px;
+.calendar th {
+    color: #2c2929;
+    font-weight: 600;
 }
 
-.weekdays,
-.days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-}
-
-.weekdays {
-    margin-bottom: 15px;
-}
-
-.weekdays span {
-    text-align: center;
-    font-weight: bold;
-    color: #060404;
-}
-
-.days span {
-    width: 42px;
-    height: 42px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.calendar td {
     border-radius: 50%;
-    cursor: pointer;
-    transition: .3s;
-    font-size: 15px;
 }
 
-.days span:not(.empty):hover {
+.calendar td:hover {
     background: #d1fae5;
     color: var(--sage-dark);
 }
 
-.days .selected {
+.calendar td.selected {
     background: #d1fae5;
     color: var(--sage-dark);
     font-weight: bold;
-    position: relative;
 }
 
+.calendar td:empty {
+    cursor: default;
+}
 
 .empty {
     visibility: hidden;
@@ -361,19 +343,6 @@ section {
     margin: 0 0 24px;
 }
 
-.venue-map {
-    width: 100%;
-    aspect-ratio: 16/10;
-    border-radius: 4px;
-    margin-bottom: 22px;
-    overflow: hidden;
-    background: var(--sage-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--sage-pale);
-    font-size: 13px;
-}
 
 .btn {
     display: inline-block;
